@@ -6,8 +6,8 @@ import Sell from './Sell'
 function Home() {
   return (
     <div>
-      <Buy />
-      {/* <Sell /> */}
+      {/* <Buy /> */}
+      <Sell />
     </div>
   )
 }

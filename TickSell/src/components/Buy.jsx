@@ -3,7 +3,7 @@ import Input from './Input'
 
 function Buy() {
   return (
-    <div className='mt-24 flex flex-col justify-center items-center'>
+    <div className='mt-12 flex flex-col justify-center items-center'>
         <div className='flex flex-row bg-slate-700 rounded-lg p-2 mb-6 hover:cursor-pointer'>
             <div className='text-white text-center font-mono text-2xl font-bold bg-[#375c85] p-2 rounded-lg w-[150px]'>BUY</div>
             <div className='text-white text-center font-mono text-2xl font-bold bg-transparent p-2 rounded-lg w-[150px]'>SELL</div>
