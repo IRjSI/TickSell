@@ -62,18 +62,22 @@ export class Service{
         }
     }
 
-    async getTickets(queries = [Query.equal("status", "active")]){
+    async getTickets({ from_station, to_station, date }) {
         try {
-            return await this.databases.listDocuments(
+            const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                queries,
-                
-
-            )
+                [
+                    Query.equal('from_station', from_station), // match from station
+                    Query.equal('to_station', to_station),     // match to station
+                    Query.equal('date', date)                  // match date
+                ]
+            );
+            console.log(response.documents)
+            return response.documents; // Return the matching tickets
         } catch (error) {
-            console.log("Appwrite serive :: getTickets :: error", error);
-            return false
+            console.error('Error fetching tickets:', error);
+            return [];
         }
     }
 

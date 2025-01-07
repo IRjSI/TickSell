@@ -1,16 +1,19 @@
-import React from 'react'
-import Input from './Input'
+import React from 'react';
+import Input from './Input';
 import { useForm } from "react-hook-form";
 import appwriteService from "../appwrite/config";
 import { useSelector } from "react-redux";
+import { ID } from 'appwrite';
+import { Link } from 'react-router-dom';
 
 function Sell() {
-    const { register, handleSubmit } = useForm({
-        defaultValues: {
-            
-        },
-    });
-    const userData = useSelector((state) => state.auth.userData);
+    const { register, handleSubmit } = useForm();
+    const { status, userData } = useSelector((state) => state.auth);
+
+    // If the user is not logged in or data is still loading
+    if (!status || !userData) {
+        return <div className="text-white text-xl text-center mt-4">Loading user data...</div>;
+    }
 
     const submit = async (data) => {
         const file = await appwriteService.uploadFile(data.image[0]);
@@ -18,58 +21,69 @@ function Sell() {
         if (file) {
             const fileId = file.$id;
             data.featuredImage = fileId;
-            await appwriteService.createPost({ ...data, seller_id:userData.$id });
+            data.slug = ID.unique();
+            await appwriteService.uploadTicket({ ...data, seller_id: userData.$id });
         }
     };
 
-  return (
-    <div className='mt-3 flex flex-col justify-center items-center'>
-        <div className='flex flex-row bg-slate-700 rounded-lg p-2 mb-6 hover:cursor-pointer'>
-            <div className='text-white text-center font-mono text-2xl font-bold  p-2 rounded-lg w-[150px]'>BUY</div>
-            <div className='text-white text-center font-mono text-2xl font-bold bg-[#375c85] p-2 rounded-lg w-[150px]'>SELL</div>
+    return (
+        <div className="mt-6 flex flex-col justify-center items-center">
+            <div className="flex flex-row bg-[#2d3748] rounded-lg p-2 mb-4 w-full max-w-md shadow-md">
+                <Link to='/buy' className="text-white text-center font-mono text-lg font-bold w-1/2 p-2 hover:bg-[#5e6c84] rounded-l-lg">
+                    BUY
+                </Link>
+                <Link to='/sell' className="text-white text-center font-mono text-lg font-bold w-1/2 p-2 rounded-r-lg bg-[#4a5568] transition-all">
+                    SELL
+                </Link>
+            </div>
+            <form
+                onSubmit={handleSubmit(submit)}
+                className="flex flex-col sm:flex-row sm:flex-wrap w-full max-w-lg gap-4 bg-[#1a202c] p-4 rounded-lg shadow-md "
+            >
+                <div className="flex flex-col w-full sm:w-1/2 justify-center">
+                    <Input
+                        label="From :"
+                        placeholder="From"
+                        className="mb-3"
+                        {...register("from_station", { required: true })}
+                    />
+                    <Input
+                        label="To :"
+                        placeholder="To"
+                        className="mb-3"
+                        {...register("to_station", { required: true })}
+                    />
+                    <Input
+                        label="Date :"
+                        type="date"
+                        className="mb-3"
+                        {...register("date", { required: true })}
+                    />
+                    <Input
+                        label="PNR :"
+                        placeholder="PNR"
+                        className="mb-3"
+                        {...register("pnr", { required: true })}
+                    />
+                </div>
+                <div className="flex flex-col sm:w-1/2">
+                    <Input
+                        label="Ticket (PDF) :"
+                        type="file"
+                        className="mb-3"
+                        accept=".pdf,.png,.jpg,.jpeg"
+                        {...register("image", { required: true })}
+                    />
+                        </div>
+                    <button
+                        type="submit"
+                        className="bg-[#2b6cb0] w-full p-2 rounded-lg text-white font-medium hover:bg-[#2c5282] transition-all"
+                    >
+                        Sell
+                    </button>
+            </form>
         </div>
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
-                <Input
-                    label="From :"
-                    placeholder="From"
-                    className="mb-4"
-                    {...register("from_station", { required: true })}
-                />
-                <Input
-                    label="To :"
-                    placeholder="To"
-                    className="mb-4"
-                    {...register("to_station", { required: true })}
-                />
-                <Input
-                    label="Date :"
-                    type='date'
-                    className="mb-4"
-                    {...register("date", { required: true })}
-                />
-                <Input
-                    label="PNR :"
-                    placeholder="PNR"
-                    className="mb-4"
-                    {...register("pnr", { required: true })}
-                />
-            </div>
-            <div className="w-1/3 px-2">
-                <Input
-                    label="Ticket(PDF) :"
-                    type="file"
-                    className="mb-4"
-                    accept=".pdf,.png,.jpg,.jpeg"
-                    {...register("image", { required: true })}
-                />
-                <button type="submit" className="bg-blue-600 p-2 w-full rounded-lg text-white">
-                    Sell
-                </button>
-            </div>
-        </form>
-    </div>
-  )
+    );
 }
 
-export default Sell
+export default Sell;

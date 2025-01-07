@@ -23,7 +23,10 @@ function Input({
             console.error(error);
         }
     }
-
+    const optionClicked = (e) => {
+        setQuery(e.NameEn)
+        setStations([]);
+    }
     const handleChange = (event) => {
         setQuery(event.target.value);
         setStations([]);
@@ -55,7 +58,7 @@ function Input({
                 {stations.map((station) => (
                     <li 
                     className='hover:bg-gray-900 p-2 rounded-lg'
-                    key={station.StationCode} onClick={() => setQuery(station.NameEn)}>{station.NameEn}</li>
+                    key={station.StationCode} onClick={() => optionClicked(station)}>{station.NameEn}</li>
                 ))}
             </ul> : <div className="flex justify-center items-center">
                         <ClipLoader color="#0470ef" />

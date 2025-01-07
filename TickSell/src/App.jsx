@@ -14,9 +14,9 @@ function App() {
 
   useEffect(() => {
     authService.getCurrentUser()
-    .then((data) => {
-      if (data) {
-        dispatch(login({data})) // if user found
+    .then((userData) => {
+      if (userData) {
+        dispatch(login({userData})) // if user found
       } else {
         dispatch(logout()) // if not found
       }

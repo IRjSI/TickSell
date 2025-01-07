@@ -9,6 +9,8 @@ import Login from './components/Login.jsx'
 import { Header } from './components/index.js'
 import Signup from './components/Signup.jsx'
 import Home from './components/Home.jsx'
+import Sell from './components/Sell.jsx'
+import Buy from './components/Buy.jsx'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,18 @@ const router = createBrowserRouter([
           path: "/signup",
           element: (
               <Signup />
+          ),
+      },
+      {
+          path: "/sell",
+          element: (
+              <Sell />
+          ),
+      },
+      {
+          path: "/buy",
+          element: (
+              <Buy />
           ),
       },
     ]
