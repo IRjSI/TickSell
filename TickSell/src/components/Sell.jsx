@@ -19,7 +19,7 @@ function Sell() {
         train_name: '',
         train_no: ''
     })
-    const apiKey = '23511fff0582e71f831cd825a7ddc043';
+    const apiKey = String(import.meta.env.VITE_RAIL_API_KEY);
 
     const findInfo = async (pnr) => {
         const url = `http://indianrailapi.com/api/v2/PNRCheck/apikey/${apiKey}/PNRNumber/${pnr}/`;
