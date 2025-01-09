@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import appwriteService from '../appwrite/config';
 import Input from './Input';
-import { Link } from 'react-router-dom';
+import { Link, Links, useNavigate } from 'react-router-dom';
+import TicketDisplay from '../Pages/TicketDisplay';
 
 function Buy() {
     const [tickets, setTickets] = useState([]);
     const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
 
     const submit = async (data) => {
         const fetchedTickets = await appwriteService.getTickets({
@@ -16,9 +18,11 @@ function Buy() {
         });
 
         setTickets(fetchedTickets);
+        navigate('/ticketDisplay', { state: { tickets } })
     };
 
     return (
+        <> 
         <div className="mt-6 flex flex-col justify-center items-center">
             <div className="flex flex-row bg-[#2d3748] rounded-lg p-2 mb-4 w-full max-w-md shadow-md">
                 <Link to='/buy' className="text-white text-center font-mono text-lg font-bold w-1/2 p-2 bg-[#4a5568] rounded-l-lg">
@@ -58,35 +62,12 @@ function Buy() {
      
             </form>
 
-            {/* Tickets */}
             <div className="mt-6 w-full max-w-lg">
-                {tickets.length > 0 ? (
-                    tickets.map((ticket, index) => (
-                        <div
-                            key={index}
-                            className="bg-gray-800 text-white p-4 rounded-lg shadow-md mb-4"
-                        >
-                            <p className="text-lg font-semibold">
-                                <strong>From:</strong> {ticket.from_station}
-                            </p>
-                            <p className="text-lg font-semibold">
-                                <strong>To:</strong> {ticket.to_station}
-                            </p>
-                            <p className="text-lg font-semibold">
-                                <strong>Date:</strong> {ticket.date}
-                            </p>
-                            <p className="text-lg font-semibold">
-                                <strong>Price:</strong> {ticket.price}
-                            </p>
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-white text-lg p-4 text-center bg-gray-800 rounded-lg shadow-md">
-                        No tickets found
-                    </p>
-                )}
+                {/* tickets */}
+                
             </div>
         </div>
+    </>
     );
 }
 

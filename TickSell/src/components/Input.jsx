@@ -60,9 +60,12 @@ function Input({
                     className='hover:bg-gray-900 p-2 rounded-lg'
                     key={station.StationCode} onClick={() => optionClicked(station)}>{station.NameEn}</li>
                 ))}
-            </ul> : <div className="flex justify-center items-center">
-                        <ClipLoader color="#0470ef" />
-                    </div>) : null}
+            </ul> 
+            // : <div className="flex justify-center items-center">
+            //             <ClipLoader color="#0470ef" />
+            //         </div>
+            // ) 
+                    : null ): null}
         </div>
   )
 }

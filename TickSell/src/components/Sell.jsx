@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from './Input';
 import { useForm } from "react-hook-form";
 import appwriteService from "../appwrite/config";
 import { useSelector } from "react-redux";
 import { ID } from 'appwrite';
-import { Link } from 'react-router-dom';
+import { data, Link } from 'react-router-dom';
 
 function Sell() {
     const { register, handleSubmit } = useForm();
@@ -15,13 +15,43 @@ function Sell() {
         return <div className="text-white text-xl text-center mt-4">Loading user data...</div>;
     }
 
+    const [trainInfo,setTrainInfo] = useState({
+        train_name: '',
+        train_no: ''
+    })
+    const apiKey = '23511fff0582e71f831cd825a7ddc043';
+
+    const findInfo = async (pnr) => {
+        const url = `http://indianrailapi.com/api/v2/PNRCheck/apikey/${apiKey}/PNRNumber/${pnr}/`;
+
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+            setTrainInfo({
+                train_name: result.TrainName,
+                train_no: result.TrainNumber
+            })
+        } catch (error) {
+            console.error("pnr sesarching error:: ",error);
+        }
+    }
+
     const submit = async (data) => {
+        await findInfo(data.pnr)
+        
+        if (!trainInfo.train_name || !trainInfo.train_no) {
+            alert("Unable to fetch train details. Please check the PNR.");
+            return;
+        }
+
         const file = await appwriteService.uploadFile(data.image[0]);
 
         if (file) {
             const fileId = file.$id;
             data.featuredImage = fileId;
             data.slug = ID.unique();
+            data.train_name = trainInfo.train_name;
+            data.train_no = trainInfo.train_no;
             await appwriteService.uploadTicket({ ...data, seller_id: userData.$id });
         }
     };

@@ -26,7 +26,9 @@ export class Service{
                     date,
                     pnr,
                     featuredImage,
-                    seller_id
+                    seller_id,
+                    train_name,
+                    train_no
                 }
             )
         } catch (error) {
@@ -73,7 +75,7 @@ export class Service{
                     Query.equal('date', date)                  // match date
                 ]
             );
-            console.log(response.documents)
+            // console.log(response.documents)
             return response.documents; // Return the matching tickets
         } catch (error) {
             console.error('Error fetching tickets:', error);

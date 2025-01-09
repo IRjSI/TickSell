@@ -9,7 +9,7 @@ function Home() {
     <div className='flex flex-col justify-center items-center'>
       
       <Buy />
-      <Sell />
+      {/* <Sell /> */}
     </div>
   )
 }
