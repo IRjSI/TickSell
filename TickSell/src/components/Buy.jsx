@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import appwriteService from '../appwrite/config';
 import Input from './Input';
-import { Link, Links, useNavigate } from 'react-router-dom';
-import TicketDisplay from '../Pages/TicketDisplay';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Buy() {
     const [tickets, setTickets] = useState([]);
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (tickets.length > 0) {
+            navigate('/ticketDisplay', { state: { tickets } })
+        }
+    }, [tickets])
 
     const submit = async (data) => {
         const fetchedTickets = await appwriteService.getTickets({
@@ -18,7 +23,6 @@ function Buy() {
         });
 
         setTickets(fetchedTickets);
-        navigate('/ticketDisplay', { state: { tickets } })
     };
 
     return (
@@ -61,11 +65,6 @@ function Buy() {
                     </button>
      
             </form>
-
-            <div className="mt-6 w-full max-w-lg">
-                {/* tickets */}
-                
-            </div>
         </div>
     </>
     );

@@ -4,21 +4,21 @@ import { useForm } from "react-hook-form";
 import appwriteService from "../appwrite/config";
 import { useSelector } from "react-redux";
 import { ID } from 'appwrite';
-import { data, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Sell() {
     const { register, handleSubmit } = useForm();
     const { status, userData } = useSelector((state) => state.auth);
-
+    const [trainInfo,setTrainInfo] = useState({
+        train_name: '',
+        train_no: ''
+    })
+    
     // If the user is not logged in or data is still loading
     if (!status || !userData) {
         return <div className="text-white text-xl text-center mt-4">Loading user data...</div>;
     }
 
-    const [trainInfo,setTrainInfo] = useState({
-        train_name: '',
-        train_no: ''
-    })
     const apiKey = String(import.meta.env.VITE_RAIL_API_KEY);
 
     const findInfo = async (pnr) => {
@@ -37,9 +37,9 @@ function Sell() {
     }
 
     const submit = async (data) => {
-        await findInfo(data.pnr)
+        const trainDetails = await findInfo(data.pnr)
         
-        if (!trainInfo.train_name || !trainInfo.train_no) {
+        if (!trainDetails.train_name || !trainDetails.train_no) {
             alert("Unable to fetch train details. Please check the PNR.");
             return;
         }
