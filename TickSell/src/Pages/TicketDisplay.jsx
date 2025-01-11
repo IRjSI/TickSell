@@ -7,12 +7,12 @@ function TicketDisplay() {
   console.log(location);
   
   return (
-    <div className='p-8 grid grid-cols-3 gap-4'>
+    <div className='p-8 grid grid-cols-4 gap-4'>
         {tickets.length > 0 ? (
         tickets.map((ticket, index) => (
           <div
             key={index}
-            className="bg-slate-600 bg-opacity-50 backdrop-blur-md text-white p-4 rounded-lg shadow-md mb-4"
+            className="bg-slate-600 bg-opacity-50 backdrop-blur-md text-white p-4 rounded-lg shadow-md mb-4 w-full"
           >
             <p className="text-lg font-semibold">
                 <strong>Train:</strong> {ticket.train_name}
@@ -24,14 +24,18 @@ function TicketDisplay() {
                 <strong>From:</strong> {ticket.from_station}
             </p>
             <p className="text-lg font-semibold">
-                <strong>To:</strong> {ticket.to_station}
+                <strong>Destination:</strong> {ticket.to_station}
             </p>
+            {/* <p className="text-lg font-semibold">
+                <strong>Booked Till:</strong> {ticket.booked_till}
+            </p> */}
             <p className="text-lg font-semibold">
                 <strong>Date:</strong> {ticket.date}
             </p>
             <p className="text-lg font-semibold">
                 <strong>Price:</strong> {ticket.price}
             </p>
+            <button className='bg-green-500 hover:bg-green-600 p-2 rounded-md w-full mt-2 font-semibold'>Buy</button>
           </div>
       ))
       ) : 

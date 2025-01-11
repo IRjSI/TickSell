@@ -24,7 +24,7 @@ function Input({
         }
     }
     const optionClicked = (e) => {
-        setQuery(e.NameEn)
+        setQuery(e.StationCode)
         setStations([]);
     }
     const handleChange = (event) => {
@@ -58,7 +58,7 @@ function Input({
                 {stations.map((station) => (
                     <li 
                     className='hover:bg-gray-900 p-2 rounded-lg'
-                    key={station.StationCode} onClick={() => optionClicked(station)}>{station.NameEn}</li>
+                    key={station.StationCode} onClick={() => optionClicked(station)}>{station.StationCode}</li>
                 ))}
             </ul> 
             // : <div className="flex justify-center items-center">

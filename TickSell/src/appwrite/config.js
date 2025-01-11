@@ -14,7 +14,7 @@ export class Service{
         this.bucket = new Storage(this.client);
     }
 
-    async uploadTicket({slug, from_station, to_station, date, pnr, featuredImage, seller_id}){
+    async uploadTicket({slug, from_station, to_station, date, pnr, featuredImage, seller_id,train_name,train_no,price,tier,coach}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -28,7 +28,10 @@ export class Service{
                     featuredImage,
                     seller_id,
                     train_name,
-                    train_no
+                    train_no,
+                    price,
+                    tier,
+                    coach
                 }
             )
         } catch (error) {

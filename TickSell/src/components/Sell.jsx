@@ -22,24 +22,44 @@ function Sell() {
     const apiKey = String(import.meta.env.VITE_RAIL_API_KEY);
 
     const findInfo = async (pnr) => {
-        const url = `http://indianrailapi.com/api/v2/PNRCheck/apikey/${apiKey}/PNRNumber/${pnr}/`;
+        const url = `https://pnr-status-indian-railway-pnr-check1.p.rapidapi.com/pnrno/${pnr}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': `${apiKey}`,
+                'x-rapidapi-host': 'pnr-status-indian-railway-pnr-check1.p.rapidapi.com'
+            }
+        };
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, options);
             const result = await response.json();
-            setTrainInfo({
+            console.log(result);
+
+            if (!result.TrainName || !result.TrainNo || !result.Class) {
+                throw new Error(`Incomplete train details in API response::${result.TrainName}::${result.TrainNo}::${result.Class}`);
+            }
+
+            return {
+                from_station: result.From,
+                to_station: result.To,
+                date: result.Doj,
                 train_name: result.TrainName,
-                train_no: result.TrainNumber
-            })
+                train_no: result.TrainNo,
+                tier: result.Class,
+                price: result.TicketFare,
+                coach: result.PassengerStatus[0].CurrentStatus
+            }
         } catch (error) {
-            console.error("pnr sesarching error:: ",error);
+            console.error(error);
+            return null;
         }
     }
 
     const submit = async (data) => {
         const trainDetails = await findInfo(data.pnr)
         
-        if (!trainDetails.train_name || !trainDetails.train_no) {
+        if (!trainDetails || !trainDetails.train_name || !trainDetails.train_no) {
             alert("Unable to fetch train details. Please check the PNR.");
             return;
         }
@@ -50,8 +70,14 @@ function Sell() {
             const fileId = file.$id;
             data.featuredImage = fileId;
             data.slug = ID.unique();
-            data.train_name = trainInfo.train_name;
-            data.train_no = trainInfo.train_no;
+            data.from_station = trainDetails.from_station;
+            data.to_station = trainDetails.to_station;
+            data.date = trainDetails.date;
+            data.train_name = trainDetails.train_name;
+            data.train_no = trainDetails.train_no;
+            data.tier = trainDetails.tier;
+            data.price = trainDetails.price;
+            data.coach = trainDetails.coach;
             await appwriteService.uploadTicket({ ...data, seller_id: userData.$id });
         }
     };
@@ -71,7 +97,7 @@ function Sell() {
                 className="flex flex-col sm:flex-row sm:flex-wrap w-full max-w-lg gap-4 bg-[#1a202c] p-4 rounded-lg shadow-md "
             >
                 <div className="flex flex-col w-full sm:w-1/2 justify-center">
-                    <Input
+                    {/*<Input
                         label="From :"
                         placeholder="From"
                         className="mb-3"
@@ -88,7 +114,7 @@ function Sell() {
                         type="date"
                         className="mb-3"
                         {...register("date", { required: true })}
-                    />
+                    />*/}
                     <Input
                         label="PNR :"
                         placeholder="PNR"
@@ -97,20 +123,20 @@ function Sell() {
                     />
                 </div>
                 <div className="flex flex-col sm:w-1/2">
-                    <Input
+                     <Input
                         label="Ticket (PDF) :"
                         type="file"
                         className="mb-3"
                         accept=".pdf,.png,.jpg,.jpeg"
                         {...register("image", { required: true })}
                     />
-                        </div>
-                    <button
-                        type="submit"
-                        className="bg-[#2b6cb0] w-full p-2 rounded-lg text-white font-medium hover:bg-[#2c5282] transition-all"
-                    >
-                        Sell
-                    </button>
+                </div>
+                <button
+                    type="submit"
+                    className="bg-[#2b6cb0] w-full p-2 rounded-lg text-white font-medium hover:bg-[#2c5282] transition-all"
+                >
+                    Sell
+                </button>
             </form>
         </div>
     );
