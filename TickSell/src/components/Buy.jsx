@@ -28,32 +28,32 @@ function Buy() {
     return (
         <> 
         <div className="mt-6 flex flex-col justify-center items-center">
-            <div className="flex flex-row bg-[#2d3748] rounded-lg p-2 mb-4 w-full max-w-md shadow-md">
-                <Link to='/buy' className="text-white text-center font-mono text-lg font-bold w-1/2 p-2 bg-[#4a5568] rounded-l-lg">
+            <div className="flex flex-row bg-[#10141b] rounded-lg p-2 mb-4 w-full max-w-md shadow-md">
+                <Link to='/buy' className="text-white text-center font-mono text-lg w-1/2 p-2 bg-[#22272f] rounded-l-lg">
                     BUY
                 </Link>
-                <Link to='/sell' className="text-white text-center font-mono text-lg font-bold w-1/2 p-2 rounded-r-lg hover:bg-[#5e6c84] transition-all">
+                <Link to='/sell' className="text-white text-center font-mono text-lg w-1/2 p-2 rounded-r-lg hover:bg-[#171d27] transition-all">
                     SELL
                 </Link>
             </div>
-            <form onSubmit={handleSubmit(submit)} className="flex flex-col sm:flex-row sm:flex-wrap w-full max-w-lg gap-4 bg-[#1a202c] p-4 rounded-lg shadow-md">
+            <form onSubmit={handleSubmit(submit)} className="flex flex-col sm:flex-row sm:flex-wrap w-full max-w-lg gap-4 bg-[#10141b] p-4 rounded-lg shadow-md">
                 <div className="space-y-4">
                     <Input
                         label="From :"
                         placeholder="From"
-                        className="block w-full bg-gray-800 text-white rounded-lg p-3"
+                        className="block w-full bg-gray-800 bg-opacity-55 text-white rounded-lg p-3"
                         {...register("from_station", { required: true })}
                     />
                     <Input
                         label="To :"
                         placeholder="To"
-                        className="block w-full bg-gray-800 text-white rounded-lg p-3"
+                        className="block w-full bg-gray-800 bg-opacity-55 text-white rounded-lg p-3"
                         {...register("to_station", { required: true })}
                     />
                     <Input
                         label="Date :"
                         type="date"
-                        className="block w-full bg-gray-800 text-white rounded-lg p-3"
+                        className="block w-full bg-gray-800 bg-opacity-55 text-white rounded-lg p-3"
                         {...register("date", { required: true })}
                     />
                 </div>

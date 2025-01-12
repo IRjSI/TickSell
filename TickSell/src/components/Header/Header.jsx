@@ -40,11 +40,11 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 backdrop-blur-lg">
+    <header className="sticky top-0 backdrop-blur-lg font-mono">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1 text-white">
           <a href="#" className="p-1.5 animate-fadeIn opacity-100 hover:opacity-50 transition-all duration-500">
-            <span className="">TickSell</span>
+            <span className="text-2xl">Rail3</span>
             
           </a>
         </div>

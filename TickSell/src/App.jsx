@@ -25,7 +25,7 @@ function App() {
   },[])
 
   return loading ? null : (
-    <div className='min-h-screen flex flex-wrap content-between'>
+    <div className='min-h-screen flex flex-wrap content-between font-sans'>
       <div className='w-full block'>
         <Header />
         <Outlet />
